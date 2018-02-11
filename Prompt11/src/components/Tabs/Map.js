@@ -34,47 +34,7 @@ export default class Map extends Component {
         this.pointToLayer = this.pointToLayer.bind(this);
         this.filterFeatures = this.filterFeatures.bind(this);
         this.filterGeoJSONLayer = this.filterGeoJSONLayer.bind(this);
-        this.retrieveSearchBarValue = this.retrieveSearchBarValue.bind(this);
     }
-
-    retrieveSearchBarValue(value) {
-        console.log(value);
-
-        const that = this;
-        var data1,
-            url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + encodeURI(value) + "&key=AIzaSyDgsBYFcoml0jnhNaWIubFwIybyorE1QC4";
-        console.log(url);
-        $.getJSON("https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + encodeURI(value) + "&key=AIzaSyDgsBYFcoml0jnhNaWIubFwIybyorE1QC4", function (data) {
-            console.log(data);
-            if (data.results.length > 0) {
-                data1 = data;
-                var long = data.results[0].geometry.location.lng;
-                var lat = data.results[0].geometry.location.lat;
-                console.log(long, lat);
-
-                that.setState({
-                    config: {
-                        params: {
-                            center: [long, lat],
-                            zoomControl: false,
-                            zoom: 13,
-                            maxZoom: 19,
-                            minZoom: 11,
-                            scrollwheel: false,
-                            legends: true,
-                            infoControl: false,
-                            attributionControl: true
-                        }
-                    }
-                });
-
-
-                that.state.map.pansTo([long, lat]);
-
-            }
-        });
-    }
-
 
     componentWillMount() {
         this.setState({
@@ -111,6 +71,7 @@ export default class Map extends Component {
         this.getData();
         // create the Leaflet map object
         if (!this.state.map) this.init(this._mapNode);
+        console.log(this._mapNode);
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -256,11 +217,12 @@ export default class Map extends Component {
 
         //search bar
         var SearchBoxControl = createSearchboxControl();
+        console.log("searchbox ctrl", SearchBoxControl);
         var control = new SearchBoxControl({
-            sideBarHeaderTitle: 'Header',
+            sidebarTitleText: 'Filter or something',
             sidebarMenuItems: {
                 Items: [
-                    {type: "link", name: "Link 1 (github.com)", href: "http://github.com", icon: "icon-local-carwash"},
+                    {type: "link", name: "Some Link 1", href: "http://github.com", icon: "icon-local-carwash"},
                     {type: "link", name: "Link 2 (google.com)", href: "http://google.com", icon: "icon-cloudy"},
                     {type: "button", name: "Button 1", onclick: "alert('button 1 clicked !')", icon: "icon-potrait"},
                     {type: "button", name: "Button 2", onclick: "button2_click();", icon: "icon-local-dining"},
@@ -302,11 +264,9 @@ export default class Map extends Component {
     render() {
         // const {subwayLinesFilter} = this.state;
         return (
-            <div className="container-fluid">
                 <div id="mapUI">
                     <div ref={(node) => this._mapNode = node} id="map"/>
                 </div>
-            </div>
         );
     }
 }

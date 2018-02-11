@@ -8,9 +8,9 @@ html, body {
 #root, #map, #mapUI {
     width: inherit;
     height: inherit;
-    background-color: #000;
+    /*background-color: #000;*/
 }
-.mt
+
 .filterSubwayLines {
     position: absolute;
     top: 10px;
@@ -81,16 +81,21 @@ html, body {
     list-style: none;
     padding: 6px 12px;
     cursor: pointer;
-    color: white;
-    border: 1px solid white;
-    border-radius: 3px;
+    /*color: white;*/
+
+    margin-right: 2px;
+    line-height: 1.42857143;
+    /*border: 1px solid transparent;*/
+    border-radius: 4px 4px 0 0;
+
+
 }
 
 .react-tabs__tab--selected {
-    background: #fff;
-    border-color: #aaa;
-    color: black;
-    border-radius: 5px 5px 0 0;
+    color: #555;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
 }
 
 .react-tabs__tab--disabled {
@@ -99,9 +104,10 @@ html, body {
 }
 
 .react-tabs__tab:focus {
-    box-shadow: 0 0 5px hsl(208, 99%, 50%);
-    border-color: hsl(208, 99%, 50%);
+    /*box-shadow: 0 0 5px hsl(208, 99%, 50%);*/
+    /*border-color: hsl(208, 99%, 50%);*/
     outline: none;
+    color: blue;
 }
 
 .react-tabs__tab:focus:after {
@@ -124,7 +130,7 @@ html, body {
     width: inherit;
 }
 
-.react-tabs{
+.react-tabs {
     width: inherit;
     height: inherit;
 }
@@ -155,6 +161,6 @@ html, body {
     text-align: center;
 }
 
-.margin-top{
+.margin-top {
     margin: 0;
 }

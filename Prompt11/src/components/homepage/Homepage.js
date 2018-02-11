@@ -2,19 +2,23 @@ import React from "react";
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import Map from "../Tabs/Map";
 import Environment from "../Tabs/Environment";
+import {PageHeader} from "react-bootstrap";
 
 export default class Homepage extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            mapNode: null
+        };
     }
 
     render() {
         return (
             <div className="container-fluid">
 
-                <div className="homepage-header">
-                    <h1>Fish</h1>
-                </div>
+                <PageHeader className="text-center">
+                    Fishx
+                </PageHeader>
 
                 <Tabs>
                     <TabList>
@@ -22,9 +26,6 @@ export default class Homepage extends React.Component {
                         <Tab>Upload</Tab>
                         <Tab>Environment</Tab>
                         <Tab>Bio</Tab>
-                        <Tab>To</Tab>
-                        <Tab>Sleep</Tab>
-                        <Tab>And cry</Tab>
                     </TabList>
 
 
@@ -40,9 +41,6 @@ export default class Homepage extends React.Component {
                         <Environment/>
                     </TabPanel>
 
-                    <TabPanel/>
-                    <TabPanel/>
-                    <TabPanel/>
                     <TabPanel/>
                 </Tabs>
             </div>
