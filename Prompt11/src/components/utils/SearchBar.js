@@ -11,7 +11,9 @@ export default class SearchBar extends React.Component{
     render(){
         return (
             <div className="input-group stylish-input-group">
-                <input type="text" className="form-control" placeholder={"Search..."}/>
+                <input type="text" onChange={(e)=>{
+                    this.props.retrieveSearchBarValue(e.target.value);
+                }} className="form-control" placeholder={"Search..."}/>
                 <span className="input-group-addon">
                         <button type="submit">
                             <span className="glyphicon glyphicon-search"/>

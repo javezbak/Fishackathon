@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css';
 // using webpack json loader we can import our geojson file like this
 import geojson from 'json!../../../asset/bk_subway_entrances.geojson';
 // import local components Filter and ForkMe
-import SearchBar from "./search/SearchBar";
+import SearchBar from "../utils/SearchBar";
 // import Filter from '../utils/Filter';
 
 // store the map configuration properties in an object,
@@ -15,7 +15,7 @@ import SearchBar from "./search/SearchBar";
 // this eventually gets passed down to the Filter component
 let subwayLineNames = [];
 
-class Map extends Component {
+export default class Map extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -33,7 +33,58 @@ class Map extends Component {
         this.pointToLayer = this.pointToLayer.bind(this);
         this.filterFeatures = this.filterFeatures.bind(this);
         this.filterGeoJSONLayer = this.filterGeoJSONLayer.bind(this);
+        this.retrieveSearchBarValue = this.retrieveSearchBarValue.bind(this);
     }
+
+    retrieveSearchBarValue(value) {
+        console.log(
+            value
+        );
+
+        var that = this;
+        var data1,
+            url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + encodeURI(value) + "&key=AIzaSyDgsBYFcoml0jnhNaWIubFwIybyorE1QC4";
+        console.log(url);
+        $.getJSON("https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + encodeURI(value) + "&key=AIzaSyDgsBYFcoml0jnhNaWIubFwIybyorE1QC4", function (data) {
+            console.log(data);
+            if (data.results.length > 0) {
+                data1 = data;
+                var long = data.results[0].geometry.location.lng;
+                var lat = data.results[0].geometry.location.lat;
+                console.log(long, lat);
+                // this.state.map.remove();
+                that.setState({
+                    config: {
+                        params: {
+                            center: [long, lat],
+                            zoomControl: false,
+                            zoom: 13,
+                            maxZoom: 19,
+                            minZoom: 11,
+                            scrollwheel: false,
+                            legends: true,
+                            infoControl: false,
+                            attributionControl: true
+                        },
+                        tileLayer: {
+                            // uri: 'http://{a|b|c}.tile.opentopomap.org/{z}/{x}/{y}.png',
+                            // uri: 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+                            uri: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                            params: {
+                                minZoom: 11,
+                                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+                                id: '',
+                                accessToken: ''
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+
+    }
+
 
     componentWillMount() {
         this.setState({
@@ -50,7 +101,9 @@ class Map extends Component {
                     attributionControl: true
                 },
                 tileLayer: {
-                    uri: 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+                    // uri: 'http://{a|b|c}.tile.opentopomap.org/{z}/{x}/{y}.png',
+                    // uri: 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+                    uri: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                     params: {
                         minZoom: 11,
                         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
@@ -88,7 +141,7 @@ class Map extends Component {
     componentWillUnmount() {
         // code to run just before unmounting the component
         // this destroys the Leaflet map object & related event listeners
-        this.state.map.remove();
+        // this.state.map.remove();
     }
 
     getData() {
@@ -219,11 +272,10 @@ class Map extends Component {
         // const {subwayLinesFilter} = this.state;
         return (
             <div id="mapUI">
-                <SearchBar/>
+                <SearchBar retrieveSearchBarValue={this.retrieveSearchBarValue}/>
                 <div ref={(node) => this._mapNode = node} id="map"/>
             </div>
         );
     }
 }
 
-export default Map;

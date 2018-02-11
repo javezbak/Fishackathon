@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <script>
+
+        // let stitchClient;
+        // let photosCollection
+        // StitchClientFactory.create("<stitch-app-id>").then(client => {
+        //     stitchClient = client;
+        //     photosCollection = stitchClient.service('mongodb', 'mongodb-atlas').db('test').collection('photos');
+        //     return stitchClient.login();
+        // });
+
+        function encodeImageFileAsURL(element) {
+            var file = element.files[0];
+            var reader = new FileReader();
+            reader.onloadend = function() {
+                console.log('RESULT', reader.result)
+            }
+            reader.readAsDataURL(file);
+
+            // photosCollection.insertOne({
+            //     date: new Date(),
+            //     location: "Hudson River",
+            //     photo_data: new BSON.Binary.fromBase64(reader)
+            // })
+
+
+        }
+    </script>
+</head>
+<body>
+
+
+<input type="file" onchange="encodeImageFileAsURL(this)" />
+
+
+
+
+</body>
+</html>
