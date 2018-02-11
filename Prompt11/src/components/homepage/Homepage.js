@@ -1,8 +1,9 @@
 import React from "react";
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
+import {PageHeader} from "react-bootstrap";
 import Map from "../Tabs/Map";
 import Environment from "../Tabs/Environment";
-import {PageHeader} from "react-bootstrap";
+import Upload from "../Tabs/Upload";
 
 export default class Homepage extends React.Component {
     constructor(props) {
@@ -23,9 +24,9 @@ export default class Homepage extends React.Component {
                 <Tabs>
                     <TabList>
                         <Tab>Map</Tab>
-                        <Tab>Upload</Tab>
                         <Tab>Environment</Tab>
                         <Tab>Bio</Tab>
+                        <Tab>Upload</Tab>
                     </TabList>
 
 
@@ -34,14 +35,15 @@ export default class Homepage extends React.Component {
                     </TabPanel>
 
                     <TabPanel>
-                        <p>abc</p>
-                    </TabPanel>
-
-                    <TabPanel>
                         <Environment/>
                     </TabPanel>
 
                     <TabPanel/>
+
+                    <TabPanel>
+                        <Upload/>
+                    </TabPanel>
+
                 </Tabs>
             </div>
         );
