@@ -18,32 +18,29 @@ export default class Homepage extends React.Component {
         return (
             <div className="container-fluid">
 
-                <PageHeader className="text-center" >
-                    <Image style ={{height: '80px', width: "300px"}}
-                        src="https://i.imgur.com/iptGdrV.png" thumbnail />
+                <PageHeader className="text-center">
+                    <Image style={{height: '80px', width: "300px"}}
+                           src="https://i.imgur.com/iptGdrV.png" thumbnail/>
                 </PageHeader>
 
                 <Tabs>
                     <TabList>
                         <Tab>Map</Tab>
+                        <Tab>Recent Data</Tab>
                         <Tab>Environment</Tab>
-                        <Tab>Biology</Tab>
-                        <Tab>Upload</Tab>
                     </TabList>
 
 
                     <TabPanel>
                         <Map/>
                     </TabPanel>
-
+                    <TabPanel>
+                        <Biology/>
+                    </TabPanel>
                     <TabPanel>
                         <Environment/>
                     </TabPanel>
-                        <Biology/>
-                    <TabPanel/>
-                    <TabPanel>
-                        <Upload/>
-                    </TabPanel>
+
 
                 </Tabs>
             </div>

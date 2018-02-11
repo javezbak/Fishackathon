@@ -31,7 +31,7 @@ export default class Environment extends React.Component {
                 <ControlLabel>Add Fishkill Information</ControlLabel>
 
                 <div className="row">
-                    <table class="table">
+                    <table className="table">
                         <thead>
                         <tr>
                             <th scope="col">#</th>
