@@ -88,7 +88,6 @@ html, body {
     /*border: 1px solid transparent;*/
     border-radius: 4px 4px 0 0;
 
-
 }
 
 .react-tabs__tab--selected {
@@ -165,7 +164,9 @@ html, body {
     margin: 0;
 }
 
-.page-header{
-     margin: 0;
-     border-bottom: none;
+.page-header {
+    margin: 0;
+    border-bottom: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 70px;
 }
