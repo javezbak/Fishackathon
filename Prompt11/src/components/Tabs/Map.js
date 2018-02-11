@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css';
 // using webpack json loader we can import our geojson file like this
 import geojson from 'json!../../../asset/bk_subway_entrances.geojson';
 // import local components Filter and ForkMe
-import SearchBar from "../utils/SearchBar";
+// import SearchBar from "../utils/SearchBar";
 // import Filter from '../utils/Filter';
 
 // store the map configuration properties in an object,
@@ -14,6 +14,7 @@ import SearchBar from "../utils/SearchBar";
 // array to store unique names of Brooklyn subway lines,
 // this eventually gets passed down to the Filter component
 let subwayLineNames = [];
+import $ from 'jquery';
 
 export default class Map extends Component {
     constructor(props) {
@@ -37,11 +38,9 @@ export default class Map extends Component {
     }
 
     retrieveSearchBarValue(value) {
-        console.log(
-            value
-        );
+        console.log(value);
 
-        var that = this;
+        const that = this;
         var data1,
             url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + encodeURI(value) + "&key=AIzaSyDgsBYFcoml0jnhNaWIubFwIybyorE1QC4";
         console.log(url);
@@ -52,7 +51,7 @@ export default class Map extends Component {
                 var long = data.results[0].geometry.location.lng;
                 var lat = data.results[0].geometry.location.lat;
                 console.log(long, lat);
-                // this.state.map.remove();
+
                 that.setState({
                     config: {
                         params: {
@@ -65,24 +64,15 @@ export default class Map extends Component {
                             legends: true,
                             infoControl: false,
                             attributionControl: true
-                        },
-                        tileLayer: {
-                            // uri: 'http://{a|b|c}.tile.opentopomap.org/{z}/{x}/{y}.png',
-                            // uri: 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
-                            uri: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                            params: {
-                                minZoom: 11,
-                                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-                                id: '',
-                                accessToken: ''
-                            }
                         }
                     }
                 });
+
+
+                that.state.map.pansTo([long, lat]);
+
             }
         });
-
-
     }
 
 
@@ -264,16 +254,58 @@ export default class Map extends Component {
         // a TileLayer is used as the "basemap"
         const tileLayer = L.tileLayer(this.state.config.tileLayer.uri, this.state.config.tileLayer.params).addTo(map);
 
+        //search bar
+        var SearchBoxControl = createSearchboxControl();
+        var control = new SearchBoxControl({
+            sideBarHeaderTitle: 'Header',
+            sidebarMenuItems: {
+                Items: [
+                    {type: "link", name: "Link 1 (github.com)", href: "http://github.com", icon: "icon-local-carwash"},
+                    {type: "link", name: "Link 2 (google.com)", href: "http://google.com", icon: "icon-cloudy"},
+                    {type: "button", name: "Button 1", onclick: "alert('button 1 clicked !')", icon: "icon-potrait"},
+                    {type: "button", name: "Button 2", onclick: "button2_click();", icon: "icon-local-dining"},
+                    {
+                        type: "link",
+                        name: "Link 3 (stackoverflow.com)",
+                        href: 'http://stackoverflow.com',
+                        icon: "icon-bike"
+                    },
+                ]
+            }
+        });
+
+        const that = this;
+        control._searchfunctionCallBack = function (searchkeywords) {
+            if (searchkeywords) {
+                console.log(searchkeywords);
+                $.getJSON("https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + encodeURI(searchkeywords) + "&key=AIzaSyDgsBYFcoml0jnhNaWIubFwIybyorE1QC4", function (data) {
+                    console.log(data);
+                    if (data.results.length > 0) {
+                        var long = data.results[0].geometry.location.lng;
+                        var lat = data.results[0].geometry.location.lat;
+                        console.log(long, lat);
+
+                        if (that.state.map) {
+                            console.log(that.state.map);
+                            that.state.map.setView(L.latLng(lat, long));
+                        }
+                    }
+                });
+            }
+        };
+        map.addControl(control);
         // set our state to include the tile layer
         this.setState({map, tileLayer});
+        console.log(map);
     }
 
     render() {
         // const {subwayLinesFilter} = this.state;
         return (
-            <div id="mapUI">
-                <SearchBar retrieveSearchBarValue={this.retrieveSearchBarValue}/>
-                <div ref={(node) => this._mapNode = node} id="map"/>
+            <div className="container-fluid">
+                <div id="mapUI">
+                    <div ref={(node) => this._mapNode = node} id="map"/>
+                </div>
             </div>
         );
     }
